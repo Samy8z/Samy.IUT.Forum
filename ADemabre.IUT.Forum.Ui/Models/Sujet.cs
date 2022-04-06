@@ -32,7 +32,7 @@ namespace ADemabre.IUT.Forum.Ui.Models
         
         public ICollection<Message> Messages { get; set; }
         
-        public ICollection<Sujet> Sujets { get; set; }
+        
         
         
 
