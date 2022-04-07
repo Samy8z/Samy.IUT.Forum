@@ -4,7 +4,7 @@ namespace ADemabre.IUT.Forum.Ui.Models
 {
     public class Categorie
     {
-        public int Id { get; set; }        
+        public short Id { get; set; }        
         
         [StringLength(255, MinimumLength = 3)]
         [Required]
@@ -26,8 +26,8 @@ namespace ADemabre.IUT.Forum.Ui.Models
 
         [DataType(DataType.Date)]
         [Required]
-        public DateTime Modification { get; set; }
-        
-        public ICollection<Topic> Topics { get; set; }
+        public DateTime Modification { get; set; } = DateTime.UtcNow;
+
+        public ICollection<Topic> Topics { get; set; } = new List<Topic>();
     }
 }

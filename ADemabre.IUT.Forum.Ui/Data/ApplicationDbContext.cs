@@ -54,7 +54,7 @@ namespace ADemabre.IUT.Forum.Ui.Data
 
                 // Each users can have multiple messages
                 b.HasMany(e => e.Messages)
-                    .WithOne()
+                    .WithOne(u => u.User)
                     .HasForeignKey(m => m.UserId)
                     .IsRequired();
             });
@@ -65,7 +65,7 @@ namespace ADemabre.IUT.Forum.Ui.Data
             {
                 // Each user can have multiple userRoles
                 b.HasMany(e => e.UserRoles)
-                    .WithOne()
+                    .WithOne(u => u.Role)
                     .HasForeignKey(ur => ur.RoleId)
                     .IsRequired();
 
@@ -93,11 +93,13 @@ namespace ADemabre.IUT.Forum.Ui.Data
 
                 b.Property(e => e.Creation)
                     .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("GETUTCDATE()")
                     .IsRequired();
 
                 b.Property(e => e.Modification)
                     .IsRequired()
                     .ValueGeneratedOnAddOrUpdate()
+                    .HasDefaultValueSql("GETUTCDATE()")
                     .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Save);
             });
             #endregion
@@ -123,11 +125,13 @@ namespace ADemabre.IUT.Forum.Ui.Data
 
                 b.Property(e => e.Creation)
                    .ValueGeneratedOnAdd()
+                   .HasDefaultValueSql("GETUTCDATE()")
                    .IsRequired();
 
                 b.Property(e => e.Modification)
                     .IsRequired()
                     .ValueGeneratedOnAddOrUpdate()
+                    .HasDefaultValueSql("GETUTCDATE()")
                     .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save); // Donne la date
 
                
@@ -153,11 +157,13 @@ namespace ADemabre.IUT.Forum.Ui.Data
                 
                 b.Property(e => e.Creation)
                     .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("GETUTCDATE()")
                     .IsRequired();
 
                 b.Property(e => e.Modification)
                     .IsRequired()
                     .ValueGeneratedOnAddOrUpdate()
+                    .HasDefaultValueSql("GETUTCDATE()")
                     .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
 
             });
@@ -189,16 +195,24 @@ namespace ADemabre.IUT.Forum.Ui.Data
 
                 b.Property(e => e.Creation)
                     .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("GETUTCDATE()")
                     .IsRequired();
 
                 b.Property(e => e.Modification)
                     .IsRequired()
                     .ValueGeneratedOnAddOrUpdate()
+                    .HasDefaultValueSql("GETUTCDATE()")
                     .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
 
                 
             });
             #endregion
         }
+
+        public DbSet<ADemabre.IUT.Forum.Ui.Models.Categorie> Categorie { get; set; }
+
+        public DbSet<ADemabre.IUT.Forum.Ui.Models.Topic> Topic { get; set; }
+
+        public DbSet<ADemabre.IUT.Forum.Ui.Models.Sujet> Sujet { get; set; }
     }
 }
