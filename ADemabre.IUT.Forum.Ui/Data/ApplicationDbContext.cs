@@ -20,7 +20,7 @@ namespace ADemabre.IUT.Forum.Ui.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
-
+            #region User
             builder.Entity<User>(b =>
             {
                 // Each users can have multiple claims
@@ -58,7 +58,9 @@ namespace ADemabre.IUT.Forum.Ui.Data
                     .HasForeignKey(m => m.UserId)
                     .IsRequired();
             });
-
+            #endregion 
+            
+            #region Role
             builder.Entity<Role>(b =>
             {
                 // Each user can have multiple userRoles
@@ -71,7 +73,9 @@ namespace ADemabre.IUT.Forum.Ui.Data
                     .HasMaxLength(255);
 
             });
-
+            #endregion
+            
+            #region Message
             builder.Entity<Message>(b =>
             {
                 b.HasKey(e => e.Id);
@@ -96,12 +100,14 @@ namespace ADemabre.IUT.Forum.Ui.Data
                     .ValueGeneratedOnAddOrUpdate()
                     .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Save);
             });
-
+            #endregion
+            
+            #region Categorie
             builder.Entity<Categorie>(b =>
             {
                 b.HasKey(e => e.Id);
                     
-
+                
                 b.Property(n => n.Nom)
                     .IsRequired();
 
@@ -112,7 +118,7 @@ namespace ADemabre.IUT.Forum.Ui.Data
                     //.HasDefaultValue(c => c.Nom)
                     .IsRequired();
 
-                b.Property(o => o.Order)
+                b.Property(e => e.Order)
                     .IsRequired();
 
                 b.Property(e => e.Creation)
@@ -124,23 +130,27 @@ namespace ADemabre.IUT.Forum.Ui.Data
                     .ValueGeneratedOnAddOrUpdate()
                     .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save); // Donne la date
 
-                b.HasMany(t => t.Topics)
-                    .WithOne(c => c.Categorie)
-                    .HasForeignKey(c => c.CategorieId)
-                    .IsRequired();
+               
             });
-
+            #endregion
+            
+            #region Sujet
             builder.Entity<Sujet>(b =>
             {
-                b.HasKey(e => e.Id);
+                b.HasKey(b => b.Id);
+
+                b.HasOne(e => e.Topic)
+                    .WithMany(t => t.Sujets)
+                    .HasForeignKey(s => s.TopicId)
+                    .IsRequired();
 
                 b.Property(n => n.Name)
                     .HasMaxLength(255)
                     .IsRequired();
-                
-                b.Property(e => e.Suppression)
-                    .HasDefaultValue(false);
 
+                b.Property(e => e.Suppression);
+                    
+                
                 b.Property(e => e.Creation)
                     .ValueGeneratedOnAdd()
                     .IsRequired();
@@ -148,13 +158,20 @@ namespace ADemabre.IUT.Forum.Ui.Data
                 b.Property(e => e.Modification)
                     .IsRequired()
                     .ValueGeneratedOnAddOrUpdate()
-                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Save);
+                    .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
 
             });
-
+            #endregion
+            
+            #region Topic
             builder.Entity<Topic>(b =>
             {
                 b.HasKey(e => e.Id);
+
+                b.HasOne(e => e.Categorie)
+                    .WithMany(c => c.Topics)
+                    .HasForeignKey(t => t.CategorieId)
+                    .IsRequired();
 
                 b.Property(n => n.Nom)
                     .HasMaxLength(255)
@@ -179,11 +196,9 @@ namespace ADemabre.IUT.Forum.Ui.Data
                     .ValueGeneratedOnAddOrUpdate()
                     .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
 
-                b.HasOne(c => c.Categorie)
-                    .WithMany(t => t.Topics)
-                    .HasForeignKey(c => c.CategorieId)
-                    .IsRequired();
+                
             });
+            #endregion
         }
     }
 }
